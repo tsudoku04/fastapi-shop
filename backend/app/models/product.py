@@ -1,7 +1,10 @@
 from sqlalchemy import Column, Integer, String, Text, Float, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
-from datetime import datetime
+from datetime import datetime, UTC
 from ..database import Base
+
+def utc_now():
+    return datetime.now(UTC)
 
 class Product(Base):
     __tablename__ = "products"
@@ -12,7 +15,7 @@ class Product(Base):
     price = Column(Float, nullable=False)
     category_id = Column(Integer, ForeignKey("categories.id"), nullable=False)
     image_url = Column(String)
-    created_at = Column(DateTime, datetime.utcnow)
+    created_at = Column(DateTime, default=utc_now, nullable=False)
 
     catregory = relationship("Category", back_populates="products")
 
