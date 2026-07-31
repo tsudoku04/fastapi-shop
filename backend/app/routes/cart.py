@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from typing import Dict
 from ..database import get_db
 from ..services.cart_services import CartService
-from ..schemas.cart import CartItemCreate, CartItemUpdate, CartResponse
+from ..schemas.cart import CartItemCreate, CartItemUpdate, CartResponse, CartItemBase
 from pydantic import BaseModel
 
 router = APIRouter(
@@ -11,9 +11,7 @@ router = APIRouter(
     tags=["cart"]
 )
 
-class AddToCartRequest(BaseModel):
-    product_id: int
-    quantity: int
+class AddToCartRequest(CartItemBase):
     cart: Dict[int, int] = {}
 
 class UpdateCartRequest(BaseModel):
@@ -31,7 +29,7 @@ def add_to_cart(request: AddToCartRequest, db: Session = Depends(get_db)):
     updated_cart = service.add_to_cart(request.cart, item)
     return {"cart": updated_cart}
 
-router.post("", response_model=CartResponse, status_code=status.HTTP_200_OK)
+@router.post("", response_model=CartResponse, status_code=status.HTTP_200_OK)
 def get_cart(cart_data: Dict[int, int], db: Session = Depends(get_db)):
     service = CartService(db)
     return service.get_cart_details(cart_data)

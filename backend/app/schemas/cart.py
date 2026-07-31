@@ -15,9 +15,9 @@ class CartItemUpdate(BaseModel):
 class CartItem(BaseModel):
     product_id: int
     name: str = Field(..., description="Product name")
-    price: int = Field(..., description="Product price")
+    price: float = Field(..., description="Product price")
     quantity: int = Field(..., description="Product quantity")
-    subtotal: int = Field(..., description="Total price for this item (price * quntity)")
+    subtotal: float = Field(..., description="Total price for this item (price * quntity)")
     image_url: Optional[str] = Field(None, description="Product image URL")
 
 class CartResponse(BaseModel):
