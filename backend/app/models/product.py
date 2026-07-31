@@ -1,10 +1,20 @@
-from sqlalchemy import Column, Integer, String, Text, Float, DateTime, ForeignKey
+from datetime import UTC, datetime
+from sqlalchemy import (
+    Column,
+    DateTime,
+    Float,
+    ForeignKey,
+    Integer,
+    String,
+    Text,
+)
 from sqlalchemy.orm import relationship
-from datetime import datetime, UTC
 from ..database import Base
+
 
 def utc_now():
     return datetime.now(UTC)
+
 
 class Product(Base):
     __tablename__ = "products"
@@ -13,11 +23,28 @@ class Product(Base):
     name = Column(String, nullable=False, index=True)
     description = Column(Text)
     price = Column(Float, nullable=False)
-    category_id = Column(Integer, ForeignKey("categories.id"), nullable=False)
-    image_url = Column(String)
-    created_at = Column(DateTime, default=utc_now, nullable=False)
 
-    catregory = relationship("Category", back_populates="products")
+    category_id = Column(
+        Integer,
+        ForeignKey("categories.id"),
+        nullable=False,
+    )
+
+    image_url = Column(String)
+
+    created_at = Column(
+        DateTime(timezone=True),
+        default=utc_now,
+        nullable=False,
+    )
+
+    category = relationship(
+        "Category",
+        back_populates="products",
+    )
 
     def __repr__(self):
-        return f"<Product(id={self.id}, name={self.name}, price={self.price})>"
+        return (
+            f"<Product(id={self.id}, "
+            f"name={self.name}, price={self.price})>"
+        )

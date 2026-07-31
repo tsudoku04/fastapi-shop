@@ -26,7 +26,7 @@ class ProductResponse(BaseModel):
     category: CategoryResponse = Field(..., description="Product categoru details")
 
     class Config:
-        form_attr = True
+        from_attributes = True
 
 
 class ProductListResponse(BaseModel):

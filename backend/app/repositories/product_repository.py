@@ -8,12 +8,12 @@ class ProductRepository:
         self.db = db
 
     def get_all(self) -> List[Product]:
-            return self.db.query(Product).options(joinedload(Product.catregory)).all()
+            return self.db.query(Product).options(joinedload(Product.category)).all()
     
     def get_by_id(self, product_id: int) -> Optional[Product]:
         return (
              self.db.query(Product)
-            .options(joinedload(Product.catregory))
+            .options(joinedload(Product.category))
             .filter(Product.id == product_id)
             .first()
         )
@@ -21,7 +21,7 @@ class ProductRepository:
     def get_by_category(self, category_id: int) -> List[Product]:
          return (
               self.db.query(Product)
-              .options(joinedload(Product.catregory))
+              .options(joinedload(Product.category))
               .filter(Product.category_id == category_id)
               .all()
          )
@@ -36,7 +36,7 @@ class ProductRepository:
     def get_multiple_by_ids(self, product_ids: List[int]) -> List[Product]:
          return (
               self.db.query(Product)
-              .options(joinedload(Product.catregory))
+              .options(joinedload(Product.category))
               .filter(Product.id.in_(product_ids))
               .all()
          )
